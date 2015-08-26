@@ -1,0 +1,305 @@
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+$if(fontfamily)$
+\usepackage{$fontfamily$}
+$else$
+\usepackage{lmodern}
+$endif$
+$if(linestretch)$
+\usepackage{setspace}
+\setstretch{$linestretch$}
+$endif$
+%%% UCD stuff
+% need this for the \foreach command
+\usepackage{tikz}
+%%%%
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+$if(euro)$
+  \usepackage{eurosym}
+$endif$
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+$if(mainfont)$
+    \setmainfont{$mainfont$}
+$endif$
+$if(sansfont)$
+    \setsansfont{$sansfont$}
+$endif$
+$if(monofont)$
+    \setmonofont[Mapping=tex-ansi]{$monofont$}
+$endif$
+$if(mathfont)$
+    \setmathfont(Digits,Latin,Greek){$mathfont$}
+$endif$
+$if(CJKmainfont)$
+    \usepackage{xeCJK}
+    \setCJKmainfont[$CJKoptions$]{$CJKmainfont$}
+$endif$
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\usepackage{color} % remove options usenames,dvipsnames as raised error
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={$author-meta$},
+            pdftitle={$title-meta$},
+            colorlinks=true,
+            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+$if(lang)$
+\ifxetex
+  \usepackage{polyglossia}
+  \setmainlanguage{$mainlang$}
+  \setotherlanguages{$for(otherlang)$$otherlang$$sep$,$endfor$}
+\else
+  \usepackage[shorthands=off,$lang$]{babel}
+\fi
+$endif$
+$if(natbib)$
+\usepackage{natbib}
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+$endif$
+$if(biblatex)$
+%%% UCD stuff
+% nice looking, parenthetical references
+% refsection=chapter does not work with pandoc
+\usepackage[sorting=nyt,natbib=true,citestyle=authoryear,bibstyle=authoryear,maxnames=3]{biblatex}
+% bibliography can be single-spaced for UC thesis format
+\appto{\bibsetup}{\ssp}
+%%%
+$for(bibliography)$
+\addbibresource{$bibliography$}
+$endfor$
+$endif$
+\usepackage{listings}
+$if(lhs)$
+\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
+$endif$
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+$if(verbatim-in-note)$
+\usepackage{fancyvrb}
+\VerbatimFootnotes
+$endif$
+$if(tables)$
+\usepackage{longtable,booktabs}
+%%% UCD stuff: tables stuff
+\usepackage[hypcap,font=singlespacing]{caption}
+\usepackage{subcaption}
+\expandafter\def\csname ver@subfig.sty\endcsname{} % avoid subfig collision
+% modern method for setting up captions\
+\captionsetup{margin=10pt,font=small,labelfont=bf}
+%
+% fix so that table captions have correct spacing
+\captionsetup[table]{position=top}
+%%% tables stuff
+$endif$
+$if(graphics)$
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+$endif$
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+$if(strikeout)$
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+$endif$
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+$if(numbersections)$
+\setcounter{secnumdepth}{5}
+$else$
+\setcounter{secnumdepth}{0}
+$endif$
+$if(verbatim-in-note)$
+\VerbatimFootnotes % allows verbatim text in footnotes
+$endif$
+
+$if(title)$
+\title{$title$$if(subtitle)$\\\vspace{0.5em}{\large $subtitle$}$endif$}
+$endif$
+$if(author)$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+$endif$
+\date{$date$}
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% UCD stuff: geometry
+% %
+% %  fit more material on the page:
+% %
+%
+% reset some float-controlling parameters
+\renewcommand{\floatpagefraction}{0.8}	% require fuller float pages
+
+% N.B.: floatpagefraction MUST be less than topfraction !!
+\renewcommand{\topfraction}{0.9}	% max fraction of floats at top
+\renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
+%%
+\begin{document}
+%%% UCD stuff: metadata for the class file
+% MS Thesis = 0, Phd Dissertation = 1
+\isdissertation{$isdissertation$}
+
+% electronic submission? Paper only = 0, Electronic = 1
+\iselectronic{$iselectronic$}
+
+\degreemonth{$degreemonth$}
+\degreeyear{$degreeyear$}
+%More examples DOCTOR OF PHILOSOPHY
+\degree{$degree$}
+
+\chair{$chair$}
+\othermembers{$for(member)$$member.name$$sep$,$endfor$}
+%comma separated list of committee not including chair
+\numberofmembers{$numberofmembers$} % size of committee
+\prevdegrees{$prevdegrees$}
+\field{$field$}
+\campus{$campus$}
+%%%
+
+%%% UCD stuff --frontmatter
+\begin{frontmatter}
+$if(title)$
+\maketitle
+$endif$
+%%% UCD stuff: -- can move this to includes before
+$if(copyrightpage)$
+\copyrightpage
+$endif$
+
+
+% dedication (optional), remove comment markers to use
+$if(dedication)$
+\begin{dedication}
+\null\vfil
+{\large
+\begin{center}
+$dedication$
+\end{center}}
+\vfil\null
+\end{dedication}
+$endif$
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+{
+\hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$if(lot)$
+\listoftables
+$endif$
+$if(lof)$
+\listoffigures
+$endif$
+%%% UCD stuff: -- abstract
+% Here is the second, internal, abstract.
+% Update: Melissa Danforth 2006
+% Inline abstract is now part of front matter according to coordinator
+$if(abstract)$
+\newpage
+\begin{inlineabstract}
+$abstract$
+\end{inlineabstract}
+$endif$
+
+$if(acknowledgments)$ %% need to include in metadata.md
+%Acknowledgments (optional)
+\begin{acknowledgments}
+$acknowledgments$
+\end{acknowledgments}
+$endif$
+
+$if(preface)$ %% need to include location for preface .tex file in metadata.md
+%Preface (optional)
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\input{$preface$}
+$endif$
+\end{frontmatter}
+%%%
+$body$
+
+$if(natbib)$
+$if(bibliography)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(biblio-title)$[heading=bibintoc,title=$biblio-title$]$endif$
+
+$endif$
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}

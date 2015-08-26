@@ -1,3 +1,11 @@
+2015
+----
+Author: Jaime Ashander
+August
+
+* first pass at pandoc+markdown version
+
+
 2014
 ----
 Author: Alex Mandel
