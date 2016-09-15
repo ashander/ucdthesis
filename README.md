@@ -90,11 +90,13 @@ System requirements
 -------------------
 
 The markdown+pandoc version of the thesis template was built and debugged on OS
-X 10.10 using open-source software with version numbers listed below, it may
+X 10.10, and tested on Ubuntu 16.04, using open-source software with version numbers listed below, it may
 work with different versions but no guarantees.
 
 * pandoc >= 1.15
-* pdfTeX 3.14159265-2.6-1.40.16 (TeX Live 2015)
-* latexmk Version 4.43a
-* biber 2.1
-* GNU Make 3.81
+- pandoc-citeproc 0.10.1
+- pandoc-crossref 0.2.3.0
+* pdfTeX 3.14159265-2.6-1.40.16 (TeX Live 2015) and (TeX Live 2015/Debian)
+* latexmk Version 4.41, 4.43a
+* biber 2.1, 2.4
+* GNU Make 3.81, 4.1
